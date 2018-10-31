@@ -1,0 +1,1 @@
+export declare const MEMCACHED_PROVIDER = "MEMCACHED_PROVIDER";

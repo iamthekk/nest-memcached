@@ -8,6 +8,15 @@ export class Memcached {
         this.client = new MemcachedClient(uri, options);
     }
 
+    async getOrSet(key: string, valueHandler:Function,lifetime?: number){
+        let result =await this.get(key)
+        if(!result){
+           result = await valueHandler()
+           this.set(key,result,lifetime)
+        }
+        return result
+    }
+
     async touch(key: string, lifetime?: number) {
         return new Promise(((resolve, reject) => {
             this.client.touch(key, lifetime, err => err ? reject(err) : resolve());
