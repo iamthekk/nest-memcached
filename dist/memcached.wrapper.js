@@ -15,12 +15,17 @@ class Memcached {
     }
     getOrSet(key, valueHandler, lifetime) {
         return __awaiter(this, void 0, void 0, function* () {
-            let result = yield this.get(key);
-            if (!result) {
-                result = yield valueHandler();
-                this.set(key, result, lifetime);
+            if (lifetime < 0) {
+                return yield valueHandler();
             }
-            return result;
+            else {
+                let result = yield this.get(key);
+                if (!result) {
+                    result = yield valueHandler();
+                    this.set(key, result, lifetime);
+                }
+                return result;
+            }
         });
     }
     touch(key, lifetime) {

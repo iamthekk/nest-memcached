@@ -2,7 +2,7 @@ import { Options } from './memcached.options';
 export declare class Memcached {
     private client;
     constructor(uri: string[] | object | string, options: Options);
-    getOrSet(key: string, valueHandler: Function, lifetime?: number): Promise<{}>;
+    getOrSet(key: string, valueHandler: Function, lifetime: number): Promise<any>;
     touch(key: string, lifetime?: number): Promise<{}>;
     get(key: string): Promise<{}>;
     gets(key: string): Promise<{}>;

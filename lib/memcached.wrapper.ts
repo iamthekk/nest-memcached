@@ -8,13 +8,20 @@ export class Memcached {
         this.client = new MemcachedClient(uri, options);
     }
 
-    async getOrSet(key: string, valueHandler:Function,lifetime?: number){
-        let result =await this.get(key)
-        if(!result){
-           result = await valueHandler()
-           this.set(key,result,lifetime)
+    /**
+     * lifeTime 小于0的时候,不读取memcache
+     */
+    async getOrSet(key: string, valueHandler:Function,lifetime: number){
+        if(lifetime<0){
+           return await valueHandler()
+        }else{
+            let result =await this.get(key)
+            if(!result){
+               result = await valueHandler()
+               this.set(key,result,lifetime)
+            }
+            return result
         }
-        return result
     }
 
     async touch(key: string, lifetime?: number) {
